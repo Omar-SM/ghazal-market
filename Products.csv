@@ -1,0 +1,90 @@
+product, category, brand, price, quantity
+Apple, Fruits, Organic Farms, 1.99, 50
+Banana, Fruits, Organic Farms, 0.99, 100
+Bread, Bakery, Artisan Bakers, 2.49, 30
+Milk, Dairy, Fresh Dairy, 3.99, 20
+Eggs, Dairy, Fresh Dairy, 2.99, 40
+Cheese, Dairy, Pure Eats, 4.99, 15
+Yogurt, Dairy, Pure Eats, 1.49, 25
+Fish, Seafood, Ocean Fresh, 5.99, 18
+Rice, Grains, Superfood Grains, 2.99, 40
+Pasta, Grains, Superfood Grains, 1.99, 30
+Cereal, Breakfast, Crunchy Delights, 3.49, 25
+Tomato, Produce, Fresh Picks, 0.99, 60
+Potato, Produce, Farm Fresh, 1.49, 50
+Carrot, Produce, Fresh Picks, 0.79, 70
+Lettuce, Produce, Fresh Picks, 1.99, 30
+Onion, Produce, Sweet Farms, 0.89, 80
+Garlic, Produce, Farm Fresh, 0.49, 100
+Avocado, Fruits, Green Harvest, 2.99, 15
+Strawberries, Fruits, Organic Farms, 3.99, 20
+Blueberries, Fruits, Organic Farms, 4.99, 18
+Orange Juice, Beverages, Balkis, 2.99, 25
+Coffee, Beverages, Roasted Beans, 6.99, 10
+Tea, Beverages, Lipton, 3.49, 30
+Water, Beverages, Evian, 0.99, 100
+Soda, Beverages, Fizzy Bubbles, 1.49, 80
+Chocolate, Snacks, Sweet Treats, 2.49, 40
+Ice Cream, Frozen Foods, Sweet Treats, 4.99, 15
+Cucumber, Produce, Fresh Picks, 0.79, 40
+Bell Pepper, Produce, Fresh Picks, 1.29, 35
+Broccoli, Produce, Sweet Farms, 1.99, 25
+Cauliflower, Produce, Farm Fresh, 2.49, 20
+Spinach, Produce, Farm Fresh, 1.99, 30
+Lemon, Fruits, Green Harvest, 0.69, 50
+Grapes, Fruits, Green Harvest, 3.99, 15
+Watermelon, Fruits, Juicy Bites, 5.99, 10
+Pineapple, Fruits, Juicy Bites, 2.99, 20
+Mango, Fruits, Juicy Bites, 1.99, 30
+Peach, Fruits, Juicy Bites, 1.49, 40
+Strawberry Jam, Pantry, Creamy Delight, 2.99, 25
+Peanut Butter, Pantry, Creamy Delight, 3.49, 20
+Olive Oil, Pantry, Natural Pantry, 6.99, 10
+Honey, Pantry, Natural Pantry, 4.99, 15
+Pasta Sauce, Pantry, Creamy Delight, 2.49, 30
+Soup, Canned Goods, Hearty Delights, 1.99, 40
+Beans, Canned Goods, Hearty Delights, 0.99, 50
+Tuna, Canned Goods, Hearty Delights, 1.49, 45
+
+Cookies, Snacks, Sweet Treats, 2.99, 35
+Chips, Snacks, Crunchy Munchies, 1.99, 40
+Popcorn, Snacks, Crunchy Munchies, 1.29, 50
+Frozen Pizza, Frozen Foods, Cheesy Foods, 4.99, 20
+Frozen Vegetables, Frozen Foods, Garden Mix, 2.49, 30
+Ice Cream Bars, Frozen Foods, Sweet Treats, 3.99, 15
+Waffles, Frozen Foods, Sweet Treats, 2.99, 20
+Yogurt Cups, Dairy, Deli Delights, 1.99, 30
+Sliced Cheese, Dairy, Deli Delights, 2.99, 25
+Butter, Dairy, Pure Eats, 3.49, 20
+Frozen Chicken, Frozen Foods, Convenient Packs, 6.99, 10
+Salmon, Seafood, Ocean Fresh, 9.99, 8
+Shrimp, Seafood, Luxury Seafood, 7.99, 12
+Lobster, Seafood, Luxury Seafood, 19.99, 3
+Crab, Seafood, Luxury Seafood, 12.99, 6
+Oats, Grains, Superfood Grains, 2.99, 25
+Quinoa, Grains, Superfood Grains, 4.99, 15
+Biscuits, Bakery, Artisan Bakers, 1.99, 30
+Croissant, Bakery, Artisan Bakers, 2.49, 20
+Bagels, Bakery, Artisan Bakers, 1.99, 25
+Donuts, Bakery, Artisan Bakers, 1.49, 40
+Cola, Beverages, Coca-Cola, 1.99, 30
+Energy Drink, Beverages, Red Bull, 2.99, 20
+Diet Cola, Beverages,, Coca-Cola, 1.99, 25
+Granola Bars, Snacks, Nutty Bites, 3.49, 20
+Nuts, Snacks, Nutty Bites, 4.99, 15
+Pretzels, Snacks, Crunchy Munchies, 1.99, 40
+Frozen Fruits, Frozen Foods, Convenient Packs, 3.99, 20
+Frozen Desserts, Frozen Foods, Sweet Treats, 4.99, 15
+Frozen Burgers, Frozen Foods, Quick Meal, 6.99, 10
+Frozen Chicken Nuggets, Frozen Foods, Convenient Packs, 4.49, 15
+Frozen French Fries, Frozen Foods, Convenient Packs, 2.99, 25
+Muffins, Bakery, Freshly Baked, 1.99, 30
+Cupcakes, Bakery, Freshly Baked, 2.49, 20
+Baguette, Bakery, Freshly Baked, 1.99, 25
+Soda Water, Beverages, Fizzy Bubbles, 0.99, 50
+Coconut Water, Beverages, Natural Hydration, 2.99, 20
+Iced Tea, Beverages, Lipton, 2.49, 25
+Lemonade, Beverages, Balkis, 1.99, 30
+Popcorn Chicken, Frozen Foods, Quick Meal, 5.99, 10
+Frozen Burritos, Frozen Foods, Quick Meal, 3.99, 15
+Frozen Pizzas, Frozen Foods, Quick Meal, 4.99, 12
