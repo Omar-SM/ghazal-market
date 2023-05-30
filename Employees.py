@@ -12,7 +12,7 @@ class EmployeeNode:
 class Employee:
     def __init__(self):
         self.root = None
-
+        
     # TO DO
     # It should take only the employee's name
     # If found it should return the node
