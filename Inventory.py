@@ -208,26 +208,12 @@ class Product():
     # Search the category for the specified category, it should return the brands
     # Search the brands for the specified brand, it should return the products
     # Add the product to the linked list
-    def addProduct(self, name = "", category = "", brand = "", price = 0.00, quantity = 0 ):
-        newProduct = ProductNode({ name, category, brand, price, quantity })
-        BST=Category()
-        brnd=Brand()
+    def addProduct( self, name = "", categoryName = "", category : Category = None, brandName = "", brand : Brand = None, price = 0.00, quantity = 0 ):
+        newProduct = ProductNode({ name, categoryName, brand, price, quantity })
 
-        if BST.search(newProduct.data['category']) == True:
-            if brnd.search(newProduct.data['brand']) == True:
-                self.append(newProduct.data)
-            else:
-                brnd.append(newProduct.data['brand'])
-                self.append(newProduct.data)
-        else:
-            if BST.root > newProduct.data['category']:
-                BST.insert(BST.root,'left',newProduct.data['category'])
-                BST.Brand=brnd.append(newProduct.data['brand'])
-                brnd.product=self.append(newProduct.data)
-            else:
-                BST.insert(BST.root,'right',newProduct.data['category'])
-                BST.Brand=brnd.append(newProduct.data['brand'])
-                brnd.product=self.append(newProduct.data)
+        if not brand.searchBrand(category=category, categoryName = categoryName, brandName = brandName):
+            brand.insert(brandName, category, categoryName)
+            
 
     # TO DO
     # The input is the name of the product, the category's name, the category, the brand, and quantity only
@@ -355,6 +341,3 @@ class SalesLog:
         dequeuedSale = self.current
         self.current = None
         return dequeuedSale
-        
-        
-
