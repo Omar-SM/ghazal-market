@@ -6,7 +6,7 @@ class categoryNode:
         self.brand_head = None
 
 
-class BinaryTree:
+class Category:
     def __init__(self):
         self.root = None
         self.current = None
@@ -114,21 +114,22 @@ class BinaryTree:
             min = node.data
         return min
         
-    def searchCategory(self , node, data):
+    def searchCategory(self , node, data) -> categoryNode | None:
         if node == None:
             return None
         else:
-            if node.data==data:
+            if node.data == data:
                 return node
-            elif data<node.data:
+            elif data < node.data:
                 self.searchBST(node.left,data)
             else:
                 self.searchBST(node.right,data)
+
 class  brandNode:
     def __init__(self,data):
-        self.next=None
-        self.product_head=None
-        self.data=data
+        self.next = None
+        self.product_head = None
+        self.data = data
 
 class Brand:
     def __init__(self):
@@ -137,30 +138,30 @@ class Brand:
         self.tail=None
 
     
-    def tailmarker(self,category:categoryNode,categoryName):   #this method is used to mark the tail of the list
-        checkNode=category.searchBST(category.root,categoryName)
-        if checkNode==None:
+    def tailmarker(self, category : categoryNode, categoryName):   #this method is used to mark the tail of the list
+        checkNode = category.searchBST(category.root, categoryName)
+        if checkNode == None:
             return None
         else:
-            self.current=checkNode.brand_head
+            self.current = checkNode.brand_head
             while self.current is not None:
                 if self.current.next is None:
-                    self.tail=self.current
-                self.current=self.current.next
+                    self.tail = self.current
+                self.current = self.current.next
 
-    def searchBrand(self,brandName,category:categoryNode,categoryName):
-        checkNode=category.searchBST(category.root,categoryName)
-        if checkNode!=None:
-            self.current=checkNode.brand_head
+    def searchBrand(self, brandName : str, category : categoryNode, categoryName : str) -> brandNode | None:
+        checkNode = category.searchBST(category.root, categoryName)
+        if checkNode != None:
+            self.current = checkNode.brand_head
             while self.current is not None:
-                if self.current.data==brandName:
+                if self.current.data == brandName:
                     return self.current
                 else:
-                    self.current=self.current.next
+                    self.current = self.current.next
         else:
             return None
 
-    def trav(self,category:categoryNode,categoryName):
+    def printBrands(self,category:categoryNode,categoryName):
         checkNode=category.searchBST(category.root,categoryName)
         if checkNode==None:
             return "this brand doesnt exist"
@@ -170,15 +171,15 @@ class Brand:
                 print(self.current.data)
                 self.current=self.current.next
 
-    def insert(self, data,category:categoryNode,categoryName):
-        n=brandNode(data)
-        checkNode=category.searchBST(category.root,categoryName)
-        if checkNode==None:
+    def addBrand(self, data, category : categoryNode, categoryName):
+        n = brandNode(data)
+        checkNode = category.searchBST(category.root,categoryName)
+        if checkNode == None:
             category.insert(category.root,categoryName)
-            category.brand_head=n
-            self.head=n
-            self.current=n
-            self.tail=n
+            category.brand_head = n
+            self.head = n
+            self.current = n
+            self.tail = n
         else:
             self.tailmarker()
             self.tail.next = n
@@ -186,9 +187,19 @@ class Brand:
             self.current = n
 
 class ProductNode:
-    def __init__(self, data = { "name" : "", "category" : "", "brand" : "", "Price" : 0.00, "Quantity" : 0 }):
+    def __init__(self, data = { "name" : "", "category" : "", "brand" : "", "price" : 0.00, "quantity" : 0 }):
         self.data = data
         self.next = None 
+
+    def __init__(self, name = "", category = "", brand = "", price = 0.0, quantity = 0):
+        self.data = {
+            "name" : name,
+            "category" : category,
+            "brand" : brand,
+            "price" : price,
+            "quantity" : quantity
+        }
+        self.next = None
 
 class Product():
     def __init__(self):
@@ -196,69 +207,28 @@ class Product():
         self.current = None
         self.tail = None
 
-    
-    def tailmarker(self):   #this method is used to mark the tail of the list
-        self.current=self.head
-        while self.current is not None:
-            if self.current.next is None:
-                self.tail=self.current
-            self.current=self.current.next
+    # This method is used to mark the tail of the list
+    def tailmarker(self, category : Category, categoryName : str, brand : Brand, brandName : str):   
+        if brand.searchBrand(brandName, category, categoryName):
+            self.current = brand.head
+            while self.current:
+                if not self.current.next:
+                    self.tail = self.current
 
-    def trav(self):
-        self.current=self.head
-        while self.current is not None:
-            print(self.current.data)
-            self.current=self.current.next
-
-    def insert(self, data):
-        n=ProductNode(data)
-        if self.head is None:
-            self.head =n
-            self.current = n
-            self.tail=n
+                self.current = self.current.next
         else:
-            if self.current is None:
-                self.current = self.head
-                n.next = self.current.next
-                self.current.next = n
-                self.current = n
-                if n.next is None:
-                    self.tail=n
-        
-    def append(self,data):
-        n=ProductNode(data)
-        self.tailmarker()
-        if self.head is None:
-            self.head=n
-            self.current=n
-            self.tail=n
-        else:
-            self.tail.next = n
-            self.tail = n
-            self.current = n
+            return None
 
-    def remove(self,data):
-        rem_data=None
-        prev=self.head
-        self.current=self.head
-        while self.current!=data:
-            if self.current.data==data:
-                if self.current.data['quantity']==0:
-                    rem_data=data
-                    prev.next=self.current.next
-                    self.current.next=None
-                    print("the removed data : "+str(rem_data))
-                    return
+    def printAllProducts(self, category : Category, categoryName : str, brand : Brand, brandName : str):
+        brandSearchResult = brand.searchBrand(brandName, category, categoryName)
+        if brandSearchResult:
+            self.current = brandSearchResult.product_head
+            while self.current:
+                if self.current.next:
+                    print(self.current.data["name"] + ", ")
                 else:
-                    print("cannt remove this product(items still exist)")
-                    return
-            else:
-                if self.current.next is None:
-                    print("there is no such data to remove")
-                    break
-                else:
-                    prev=self.current
-                    self.current=self.current.next
+                    print(self.current.data["name"] + ".")
+                self.current = self.current.next
     
     # TO DO
     # The input is the product's name, the category's name, the category, brand, price, and quantity
@@ -266,26 +236,19 @@ class Product():
     # Search the category for the specified category, it should return the brands
     # Search the brands for the specified brand, it should return the products
     # Add the product to the linked list
-    def addProduct(self, name = "", category = "", brand = "", price = 0.00, quantity = 0 ):
-        newProduct = ProductNode({ name, category, brand, price, quantity })
-        BST=Category()
-        brnd=Brand()
+    def addProduct(self, productName = "", category : Category = None, categoryName = "", brand : Brand = None, brandName = "", price = 0.00, quantity = 0):
+        newProduct = ProductNode({ productName, categoryName, brandName, price, quantity })
 
-        if BST.search(newProduct.data['category']) == True:
-            if brnd.search(newProduct.data['brand']) == True:
-                self.append(newProduct.data)
-            else:
-                brnd.append(newProduct.data['brand'])
-                self.append(newProduct.data)
+        brandSearchResults = brand.searchBrand(brandName, category, categoryName)
+        if brandSearchResults:
+            self.current = brand.searchBrand(brandName, category, categoryName).product_head
+
+            self.tailmarker(category=category, categoryName=categoryName, brand=brand, brandName=brandName)
+
+            self.tail.next = self.tail = newProduct
         else:
-            if BST.root > newProduct.data['category']:
-                BST.insert(BST.root,'left',newProduct.data['category'])
-                BST.Brand=brnd.append(newProduct.data['brand'])
-                brnd.product=self.append(newProduct.data)
-            else:
-                BST.insert(BST.root,'right',newProduct.data['category'])
-                BST.Brand=brnd.append(newProduct.data['brand'])
-                brnd.product=self.append(newProduct.data)
+            brand.addBrand(data=brandName, category=category, categoryName=categoryName)
+            self.addProduct(productName=productName, category=category, categoryName=categoryName, brand=brand, brandName=brandName, price=price, quantity=quantity)
 
     # TO DO
     # The input is the name of the product, the category's name, the category, the brand, and quantity only
@@ -294,17 +257,24 @@ class Product():
     # Search the brands for the specified brand, it should return the products
     # Search for the specified product and sell it
     # Leave the sales log part for Omar M (me)
-    def sell(self, category, brand, name, amount):
-        productToSell = ProductNode({ "name" : name, "category" : category, "brand" : brand })
-        self.current = self.head
-        while self.current.data:
-            if self.current.data == productToSell.data:
+    def sellProduct(self, category : Category, categoryName : str, brand : Brand, brandName : str, productName : str, amount : int):
+        brandSearchResult = brand.searchBrand(brandName, category, categoryName)
+
+        if not brandSearchResult:
+            print("The category or the brand doesn't exists.")
+            return
+        
+        self.current = brandSearchResult.product_head
+        while self.current:
+
+            if self.current.data["name"] == productName:
                 quantity = self.current.data['quantity']
+                
                 if quantity != 0 and quantity >= amount:
-                    quantity -= amount
-                    self.current.data['quantity'] = quantity
+                    self.current.data['quantity'] -= amount
+
                     for i in range(amount):
-                        SalesLog.addSaleLog({ name, category, brand, self.current.data['price']})
+                        SalesLog.addSaleLog({ productName, categoryName, brandName, self.current.data['price']})
                     return
 
                 else:
@@ -319,32 +289,37 @@ class Product():
     # Search the category for the specified category, it should return the brands
     # Search the brands for the specified brand, it should return the products
     # Search for the product key and return the node
-    def searchProduct(self, data):
-        BST = Category()
-        brnd = Brand()
+    def searchProduct(self, productName : str, category : Category, categoryName : str, brand : Brand, brandName : str):
+        brandSearchResult = brand.searchBrand(brandName, category, categoryName)
 
-        if BST.search( data['category'] ) == True:
-            if brnd.search( data['brand'] ) == True:
-                self.current = self.head
-                x = 0
-                while self.current.data != data:
-                    if self.current.data == data:
-                        print(self.current.data)
-                        x=1
-                        return
-                    self.current=self.current.next
-                if x==0:
-                    print("the product doesnt exist")
-            else:
-                print("the category exist, but the brand and the product does not exist")
-        else:
-            print("all this category doesnt exist")
+        if not brandSearchResult:
+            print("The category or brand doesn't exists.")
+            return
+    
+        self.current = brand.searchBrand(brandName, category, categoryName).product_head
+
+        while self.current:
+            if self.current.data["name"] == productName:
+                return self.current.data
+            self.current = self.current.next
+
+        print("Product Not Found.")
+        return None
 
 # This node is for the sales log Queue
 # saleInfo is the data, containing the name, category, brand, and price of the product
 class SalesNode:
     def __init__(self, saleInfo : dict = { "name" : "", "category" : "", "brand" : "", "price" : 0.00 }):
         self.saleInfo = saleInfo
+        self.next = None
+
+    def __init__(self, name = "", category = "", brand = "", price = 0.0):
+        self.saleInfo = {
+            "name" : name,
+            "category" : category,
+            "brand" : brand,
+            "price" : price
+        }
         self.next = None
 
 # The Sales Logs Queue

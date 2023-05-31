@@ -1,27 +1,25 @@
-class Employee:
-    def __init__(self, name, position, age, salary):
-        self.name = name.lower()
-        self.position = position
-        self.age = age
-        self.salary = salary
-
-class Node:
-    def __init__(self, employee):
-        self.employee = employee
+class EmployeeNode:
+    def __init__(self, name = "", position = "", age = 0, salary = 0.00):
+        self.info = {
+            "name" : name.lower(),
+            "position" : position,
+            "age" : age,
+            "salary" : salary
+        }
         self.left = None
         self.right = None
-
-class EmployeeBST:
+         
+class Employee:
     def __init__(self):
         self.root = None
 
-def search_employee(self, node, name):
+def searchEmployee(self, name, node):
     if node == None:
         return False
     
     else:
         if node.data == name:
-            return True
+            return node.data
         
         elif name < node.data:
             return self.search(node.left, name)
@@ -29,7 +27,7 @@ def search_employee(self, node, name):
         else:
             return self.search(node.right, name)
         
-def insert_employee(self, node, data, name):
+def insertEmployee(self, node, data, name):
     if node == "root":
         newNode = Node(data)
         self.root = newNode
@@ -51,7 +49,7 @@ def insert_employee(self, node, data, name):
     
     return node
 
-def delete_employee(self, node, name):
+def deleteEmployee(self, name, node):
     if node == None:
         return name + "is not part of the staff"
     
@@ -85,4 +83,12 @@ def findSmallest(self, node):
     
     else:
         return self.findSmallest(node.left)
+    
 
+def alterEmployee(self, name, attribute, value):
+        employeeNode = self.searchEmployee(name, self.root)
+        if employeeNode:
+            employeeNode.info[attribute] = value
+            return "Attribute '{}' of employee '{}' has been updated.".format(attribute, name)
+        else:
+            return "Employee '{}' not found.".format(name)

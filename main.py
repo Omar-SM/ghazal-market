@@ -170,7 +170,7 @@ def main():
                 case 3:
                     productInfo = getProductInfo()
 
-                    products.sell(
+                    products.sellProduct(
                         productInfo["name"],
                         productInfo["category"],
                         productInfo["brand"],
@@ -182,13 +182,16 @@ def main():
                     return
                 
                 case 4:
-                    categories.printCategories()
+                    categories.inorderTraverse()
                     return
                 case 5:
                     category = input("Category Name: ")
-                    brandsList = categories.searchBST(category)
-                    brandsList.trav()
-                    return
+                    categorySelected = categories.searchCategory(category)
+                    if categorySelected:
+                        brandsList = categorySelected.brand_head
+                        brandsList.printBrands()
+                        return
+                    print("There is no such Category")
                     
                 case default:
                     print(f"There is no option {option3}.")
