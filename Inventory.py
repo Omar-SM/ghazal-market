@@ -126,7 +126,6 @@ class BinaryTree:
                 self.searchBST(node.left,data)
             else:
                 self.searchBST(node.right,data)
-
 class  brandNode:
     def __init__(self,data):
         self.next=None
@@ -140,12 +139,16 @@ class Brand:
         self.tail=None
 
     
-    def tailmarker(self):   #this method is used to mark the tail of the list
-        self.current=self.head
-        while self.current is not None:
-            if self.current.next is None:
-                self.tail=self.current
-            self.current=self.current.next
+    def tailmarker(self,category:categoryNode,categoryName):   #this method is used to mark the tail of the list
+        checkNode=category.searchBST(category.root,categoryName)
+        if checkNode==None:
+            return None
+        else:
+            self.current=checkNode.brand_head
+            while self.current is not None:
+                if self.current.next is None:
+                    self.tail=self.current
+                self.current=self.current.next
 
     def searchBrand(self,brandName,category:categoryNode,categoryName):
         checkNode=category.searchBST(category.root,categoryName)
