@@ -39,15 +39,16 @@ def main():
                                 #     return
                                 
                                 with open(fileName, 'r') as employeesFile:
-                                    csvReader = csv.DictReader(employeesFile, delimiter=',')
+                                    csvReader = csv.reader(employeesFile)
+                                    csvReader.__next__()
 
                                     for column in csvReader:
                                         employees.addEmployee(
                                             employees.root,
-                                            column['name'],
-                                            column['position'],
-                                            column['age'],
-                                            column['salary']
+                                            column[0],
+                                            column[1],
+                                            column[2],
+                                            column[3]
                                         )
 
                                     employeesFile.close()
@@ -86,7 +87,12 @@ def main():
                         case 3:
                             name = input("Employee's name to delete: ")
                             deletedEmployee = employees.deleteEmployee(name, employees.root)
-                            print(f"{deletedEmployee.info['name']} is deleted")
+
+                            if deletedEmployee:
+                                print(f"{deletedEmployee.info['name']} is deleted")
+                                continue
+                            
+                            print("Employee not found!")
                             continue
                         
                         case 4:
@@ -94,7 +100,6 @@ def main():
                             employeeInfo = getEmployeeInfo()
 
                             alteredEmployee = employees.alterEmployee(
-                                employees.root,
                                 employeeInfo["name"],
                                 employeeInfo["position"],
                                 employeeInfo["age"],
@@ -102,7 +107,7 @@ def main():
                             )
 
                             if alteredEmployee:
-                                print(f"{alteredEmployee['name']} is altered")
+                                print(f"{alteredEmployee.info['name']} is altered. Position: {alteredEmployee.info['position']}, age: {alteredEmployee.info['age']}, salary: {alteredEmployee.info['salary']}.")
                             else:
                                 print("Employee not found")
                             continue
@@ -145,17 +150,18 @@ def main():
                                 #     return
                                 
                                 with open(fileName, 'r') as productsFile:
-                                    csvReader = csv.DictReader(productsFile)
+                                    csvReader = csv.reader(productsFile)
+                                    csvReader.__next__()
 
                                     for column in csvReader:
                                         products.addProduct(
-                                            column['name'], 
+                                            column[0], 
                                             categories,
-                                            column['category'], 
+                                            column[1], 
                                             brands,
-                                            column['brand'], 
-                                            float(column['price']), 
-                                            int(column['quantity'])
+                                            column[2], 
+                                            float(column[3]), 
+                                            int(column[4])
                                         )
 
                                 productsFile.close()
@@ -252,9 +258,8 @@ def main():
                 continue
 
         except (TypeError) as err:
-            print("Unvalid input. Numbers are only excepted.")
             print(err)
-            return
+            continue
 
 def getProductInfo() -> dict:
     try:
@@ -262,10 +267,9 @@ def getProductInfo() -> dict:
         category = input(f"{name}'s Category: ")
         brand = input(f"{name}'s Brand: ")
         price = float(input(f"{name}'s Price: "))
-        quantity = int(input(f"Quantity of {name}"))
+        quantity = int(input(f"Quantity of {name}: "))
 
     except (TypeError) as err:
-        print("Unvalid input. Numbers are only excepted.")
         print(err)
         return
     
@@ -285,7 +289,6 @@ def getEmployeeInfo() -> dict:
         salary = float(input(f"{name}'s Salary: "))
 
     except (TypeError) as err:
-        print("Unvalid input. Numbers are only excepted.")
         print(err)
         return
     

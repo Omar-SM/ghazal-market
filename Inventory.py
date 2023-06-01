@@ -1,6 +1,6 @@
 class CategoryNode:
     def __init__(self, name : str = ""):
-        self.name = name
+        self.name = name.lower()
         self.left = None
         self.right = None
         self.brand_head = None
@@ -10,12 +10,6 @@ class Category:
     def __init__(self):
         self.root = None
         self.current = None
-
-    def inorderTraverse(self, node): # Depth First
-        if node != None:
-            self.inorderTraverse(node.left)
-            print(node.data, " ")
-            self.inorderTraverse(node.right)
     
     def defineRoot(self, data):
         if self.root == None:
@@ -24,24 +18,28 @@ class Category:
         else:
             print("Root already inserted")
 
-    def addCategoty(self, node : CategoryNode, categoryName : str):
-        if not node:
-            node = self.root
+    def addCategory(self, node : CategoryNode, categoryName : str):
 
-        if not node:
+        if not self.root:
             newCategoryNode = CategoryNode(categoryName)
             self.root = newCategoryNode
             print("Root added")
-            return
+            return self.root
+        
+        if not node:
+            newCategory = CategoryNode(categoryName)
+            return newCategory
 
         if categoryName.lower() == node.name.lower():
-            return "node already exists"
+            return None
         
         elif categoryName.lower() < node.name.lower():
             node.left = self.addCategoty(node.left, categoryName)
         
         else:
             node.right = self.addCategoty(node.right, categoryName)
+
+        return node
 
     def printLeafNodes(self, node):
         if node == None:
@@ -124,23 +122,25 @@ class Category:
         return min
         
     def searchCategory(self , node : CategoryNode, categoryName : str) -> CategoryNode | None:
-        categoryName = categoryName.lower()
-
-        if node == None:
+        if not node:
             return None
+        
+        # categoryName = categoryName.lower()
     
-        if node.name.lower() == categoryName:
+        if node.name == categoryName:
             return node
-        elif categoryName < node.name.lower():
-            self.searchCategory(node.left, categoryName)
+        
+        elif categoryName < node.name:
+            return self.searchCategory(node.left, categoryName)
+
         else:
-            self.searchCategory(node.right, categoryName)
+            return self.searchCategory(node.right, categoryName)
 
 class  brandNode:
-    def __init__(self,data):
+    def __init__(self, name : str = ""):
         self.next = None
         self.product_head = None
-        self.data = data
+        self.name = name
 
 class Brand:
     def __init__(self):
@@ -149,53 +149,59 @@ class Brand:
         self.tail=None
 
     
-    def tailmarker(self, category : CategoryNode, categoryName):   #this method is used to mark the tail of the list
-        checkNode = category.searchBST(category.root, categoryName)
-        if checkNode == None:
+    def tailmarker(self, category : Category, categoryName : str):   #this method is used to mark the tail of the list
+        categorySearchResults = category.searchCategory(category.root, categoryName)
+        if categorySearchResults == None:
             return None
         else:
-            self.current = checkNode.brand_head
-            while self.current is not None:
+            self.current = categorySearchResults.brand_head
+            while self.current:
                 if self.current.next is None:
                     self.tail = self.current
                 self.current = self.current.next
 
-    def searchBrand(self, brandName : str, category : CategoryNode, categoryName : str) -> brandNode | None:
-        checkNode = category.searchBST(category.root, categoryName)
-        if checkNode != None:
-            self.current = checkNode.brand_head
-            while self.current is not None:
-                if self.current.data == brandName:
-                    return self.current
-                else:
-                    self.current = self.current.next
-        else:
-            return None
+    def searchBrand(self, brandName : str, category : Category, categoryName : str) -> brandNode | None:
+        categorySearchResults = category.searchCategory(category.root, categoryName)
 
-    def printBrands(self, category : CategoryNode, categoryName : str):
-        checkNode = category.searchBST(category.root, categoryName)
-        if checkNode == None:
-            return "this brand doesnt exist"
-        else:
-            self.current = checkNode.brand_head
+        if categorySearchResults:
+            self.current = categorySearchResults.brand_head
+
             while self.current is not None:
-                print(self.current.data)
+                if self.current.name == brandName:
+                    return self.current
                 self.current = self.current.next
 
-    def addBrand(self, data, category : CategoryNode, categoryName):
-        n = brandNode(data)
-        checkNode = category.searchBST(category.root,categoryName)
-        if checkNode == None:
-            category.addCategory(category.root, categoryName)
-            category.brand_head = n
-            self.head = n
-            self.current = n
-            self.tail = n
+        return None
+
+    def printBrands(self, category : Category, categoryName : str):
+        categorySearchResults = category.searchCategory(category.root, categoryName)
+
+        if categorySearchResults == None:
+            return "this brand doesnt exist"
         else:
-            self.tailmarker()
-            self.tail.next = n
-            self.tail = n
-            self.current = n
+            self.current = categorySearchResults.brand_head
+            while self.current is not None:
+                if not self.current.next:
+                    print(self.current.name + ".")
+
+                print(self.current.name + ", ")
+                self.current = self.current.next
+
+    def addBrand(self, brandName : str, category : Category, categoryName):
+        categoryNode = category.searchCategory(category.root,categoryName)
+
+        if not categoryNode:
+            newcategory = category.addCategory(category.root, categoryName)
+            newBrand = brandNode(brandName)
+            newcategory.brand_head = newBrand
+            self.head = newBrand
+            self.tail = newBrand
+
+        else:
+            self.tailmarker(category, categoryName)
+            newBrand = brandNode(brandName)
+            self.tail.next = newBrand
+            self.tail = newBrand
 
 # This node is for the sales log Queue
 # saleInfo is the data, containing the name, category, brand, and price of the product
@@ -325,7 +331,7 @@ class Product():
                 self.current = self.current.next
     
     def addProduct(self, productName = "", category : Category = None, categoryName = "", brand : Brand = None, brandName = "", price = 0.00, quantity = 0):
-        newProduct = ProductNode({ productName, categoryName, brandName, price, quantity })
+        newProduct = ProductNode(productName, categoryName, brandName, price, quantity)
 
         brandSearchResults = brand.searchBrand(brandName, category, categoryName)
         if brandSearchResults:
@@ -335,7 +341,7 @@ class Product():
 
             self.tail.next = self.tail = newProduct
         else:
-            brand.addBrand(data=brandName, category=category, categoryName=categoryName)
+            brand.addBrand(brandName==brandName, category=category, categoryName=categoryName)
             self.addProduct(productName=productName, category=category, categoryName=categoryName, brand=brand, brandName=brandName, price=price, quantity=quantity)
 
     def sellProduct(self, category : Category, categoryName : str, brand : Brand, brandName : str, productName : str, amount : int, salesLog : SalesLog):

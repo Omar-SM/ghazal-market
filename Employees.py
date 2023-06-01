@@ -24,22 +24,23 @@ class Employee:
             return node
         
         elif name < node.info["name"]:
-            return self.search(name, node.left)
+            return self.searchEmployee(name, node.left)
         
         else:
-            return self.search(name, node.right)
+            return self.searchEmployee(name, node.right)
             
     def addEmployee(self, node : EmployeeNode, name : str, position : str, age : int, salary : float):
         name = name.lower()
 
-        if not node:
-            node = self.root
-
         if not self.root:
-            newNode = EmployeeNode(name, position, age, salary)
-            self.root = newNode
+            newEmployee = EmployeeNode(name, position, age, salary)
+            self.root = newEmployee
             print(f"{name} is added to the root")
-            return
+            return self.root
+        
+        if not node:
+            newEmployee = EmployeeNode(name, position, age, salary)
+            return newEmployee
         
         if name == node.info["name"]:
             print(f"{name} is part of the staff")
@@ -49,30 +50,37 @@ class Employee:
 
         else:
             node.right = self.addEmployee(node.right, name, position, age, salary)
+        return node
 
     def deleteEmployee(self, name : str, node : EmployeeNode):
         name = name.lower()
+
+        if not node:
+            return None
         
         if name < node.info["name"]:
             node.left = self.deleteEmployee(name, node.left)
+            return node
         
         elif name > node.info["name"]:
             node.right = self.deleteEmployee(name, node.right)
+            return node
         
         else:
             if node.left == None and node.right == None:
                 return None
             
-            if node.left == None:
+            elif node.left == None:
                 return node.right
             
-            if node.right == None:
+            elif node.right == None:
                 return node.left
             
-            replacement = self.findSmallest(node.right)
-            node.info = replacement
-            node.right = self.deleteEmployee(node.right, replacement)
-            return node
+            else:
+                replacement = self.findSmallest(node.right)
+                node.info['name'] = replacement['name']
+                node.right = self.deleteEmployee(replacement['name'], node.right)
+                return node
         
     def findSmallest(self, node : EmployeeNode):
         if node.left == None:
@@ -82,22 +90,21 @@ class Employee:
             return self.findSmallest(node.left)
         
 
-    def alterEmployee(self, node : EmployeeNode, name : str, position : str, age : int, salary : float):
-            employeeNode = self.searchEmployee(name, node)
-            if employeeNode:
-                employeeNode.info = {
+    def alterEmployee(self, name : str, position : str, age : int, salary : float):
+            employee = self.searchEmployee(name, self.root)
+            if employee:
+                employee.info = {
                     "name" : name,
                     "position" : position,
                     "age" : age,
                     "salary" : salary
                 }
-                print(f"{name} has been updated")
-                return employeeNode
+                return employee
             else:
                 print(f"{name} not found")
                 return
 
-    def height(self, node):
+    def height(self, node) -> int:
         if node == None:
             return -1
         
@@ -114,6 +121,7 @@ class Employee:
                 return heightRightSubtree + 1
 
     def printAllEmployees(self, node : EmployeeNode):
+
         if not node:
             node = self.root
         
@@ -131,7 +139,7 @@ class Employee:
             return
         
         elif level == 0:
-            print(node.info["name"] + ", ")
+            print(f"name: {node.info['name']}, position: {node.info['position']}, age: {node.info['age']}, salary: {node.info['salary']}.")
             return
         
         else:
