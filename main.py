@@ -169,42 +169,49 @@ def main():
                                 continue
                                 
                             elif option4 == 2:
-                                
-                                productInfo = getProductInfo()
+                                brandName = input("Enter new brand/: ")
+                                category = input("Category: ")
+                                print(f"{brands.addBrand(brandName, categories, category).name}")
+                                # productInfo = getProductInfo()
 
-                                products.addProduct(
-                                        productInfo['name'], 
-                                        categories,
-                                        productInfo['category'], 
-                                        brands,
-                                        productInfo['brand'], 
-                                        float(productInfo['price']), 
-                                        int(productInfo['quantity'])
-                                    )
+                                # products.addProduct(
+                                #         productInfo['name'], 
+                                #         categories,
+                                #         productInfo['category'], 
+                                #         brands,
+                                #         productInfo['brand'], 
+                                #         float(productInfo['price']), 
+                                #         int(productInfo['quantity'])
+                                #     )
                                 
-                                print(f"{productInfo['name']} added successfully")
-                                continue
+                                # print(f"{productInfo['name']} added successfully")
+                                # continue
+                                pass
 
                             else:
                                 print(f"There is no option {option4}. Try again!")
                                 continue
                         case 2:
-                            productInfo = getProductInfo()
+                            brandName = input("Enter new brand/: ")
+                            category = input("Category: ")
+                            res = brands.searchBrand(brandName, categories, category)
+                            if res:
+                                print(f"{res.name}")
+                            # productInfo = getProductInfo()
 
-                            product = products.searchProduct(
-                                productInfo["name"],
-                                categories,
-                                productInfo["category"],
-                                brands,
-                                productInfo["brand"],
-                            )
+                            # product = products.searchProduct(
+                            #     productInfo["name"],
+                            #     categories,
+                            #     productInfo["category"],
+                            #     brands,
+                            #     productInfo["brand"],
+                            # )
 
-                            if product:
-                                print(f"Product {product.data['name']} found")
-                            else:
-                                print("Product hasn't been found.")
-                            continue
-
+                            # if product:
+                            #     print(f"Product {product.data['name']} found")
+                            # else:
+                            #     print("Product hasn't been found.")
+                            pass
                         case 3:
                             name = input("Product's Name: ")
                             category = input(f"{name}'s Category: ")
@@ -236,8 +243,7 @@ def main():
                             category = input("Category Name: ")
                             categorySelected = categories.searchCategory(categories.root, category.strip())
                             if categorySelected:
-                                brandsList = categorySelected.brand_head
-                                brandsList.printBrands()
+                                brands.printBrands(categories, categorySelected.name)
                                 continue
                             print("There is no such Category")
 
