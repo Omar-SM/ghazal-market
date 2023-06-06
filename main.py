@@ -4,8 +4,6 @@ import csv, re
 
 employees = Employee()
 categories = Category()
-brands = Brand()
-products = Product()
 salesLog = SalesLog()
 
 def main():
@@ -33,10 +31,6 @@ def main():
 
                             if option4 == 1:
                                 fileName = input("File Name or Path: ")
-
-                                # if re.search(".+\.csv", fileName):
-                                #     print("The file is either not a valid file name or it is not a csv file.")
-                                #     return
                                 
                                 with open(fileName, 'r') as employeesFile:
                                     csvReader = csv.reader(employeesFile)
@@ -144,108 +138,106 @@ def main():
 
                             if option4 == 1:
                                 fileName = input("File Name or Path: ")
-
-                                # if re.search(".+\.csv", fileName):
-                                #     print("The file is either not a valid file name or it is not a csv file.")
-                                #     return
                                 
                                 with open(fileName, 'r') as productsFile:
                                     csvReader = csv.reader(productsFile)
                                     csvReader.__next__()
 
-                                    for column in csvReader:
-                                        products.addProduct(
-                                            column[0], 
-                                            categories,
-                                            column[1], 
-                                            brands,
-                                            column[2], 
-                                            float(column[3]), 
-                                            int(column[4])
+                                    for product in csvReader:
+                                        categoryNode = categories.searchCategory(categories.root, product[1])
+                                        brandNode = None
+                                        product = None
+
+                                        if not categoryNode:
+                                            categoryNode = categories.addCategory(categories.root, product[1])
+
+                                        else:
+                                            brandNode = categoryNode.brand_head.searchBrand(product[2])
+                                            if not brandNode:
+                                                brandNode = categoryNode.brand_head.addBrand(product[2])
+                                    
+                                        product = brandNode.product_head.addProduct(
+                                            productName=product[0],
+                                            categoryName=product[1],
+                                            brandName=product[2],
+                                            price=product[3],
+                                            quantity=product[4]
                                         )
 
-                                productsFile.close()
-                                print(f"Products added successfully")
-                                continue
+                                    productsFile.close()
+                                    print(f"All products are successfully added!")
+                                    continue
                                 
                             elif option4 == 2:
-                                brandName = input("Enter new brand/: ")
-                                category = input("Category: ")
-                                print(f"{brands.addBrand(brandName, categories, category).name}")
-                                # productInfo = getProductInfo()
+                                products = getProductInfo()
 
-                                # products.addProduct(
-                                #         productInfo['name'], 
-                                #         categories,
-                                #         productInfo['category'], 
-                                #         brands,
-                                #         productInfo['brand'], 
-                                #         float(productInfo['price']), 
-                                #         int(productInfo['quantity'])
-                                #     )
-                                
-                                # print(f"{productInfo['name']} added successfully")
-                                # continue
-                                pass
+                                categoryNode = categories.searchCategory(categories.root, products["category"])
+                                brandNode = None
+                                product = None
 
-                            else:
-                                print(f"There is no option {option4}. Try again!")
-                                continue
-                        case 2:
-                            brandName = input("Enter new brand/: ")
-                            category = input("Category: ")
-                            res = brands.searchBrand(brandName, categories, category)
-                            if res:
-                                print(f"{res.name}")
-                            # productInfo = getProductInfo()
+                                if not categoryNode:
+                                    categoryNode = categories.addCategory(categories.root, products["category"])
+                                    print(f"{categoryNode.name} added")
 
-                            # product = products.searchProduct(
-                            #     productInfo["name"],
-                            #     categories,
-                            #     productInfo["category"],
-                            #     brands,
-                            #     productInfo["brand"],
-                            # )
+                                if categoryNode.brand_head:
+                                    brandNode = categoryNode.brand_head.searchBrand(products["brand"])
+                                    if not brandNode:
+                                        brandNode = categoryNode.brand_head.addBrand(products["brand"])
+                                        print(f"{brandNode.name} added")
 
-                            # if product:
-                            #     print(f"Product {product.data['name']} found")
-                            # else:
-                            #     print("Product hasn't been found.")
-                            pass
-                        case 3:
-                            name = input("Product's Name: ")
-                            category = input(f"{name}'s Category: ")
-                            brand = input(f"{name}'s Brand: ")
-                            quantity = int(input(f"Quantity to sell: {name}"))
-
-                            product = products.sellProduct(
-                                    categories,
-                                    category,
-                                    brands,
-                                    brand,
-                                    name,
-                                    quantity,
-                                    salesLog
+                                else:
+                                    brand = categoryNode.brand_head = Brand()
+                                    brandNode = brand.addBrand(products["brand"])
+                        
+                                product = brandNode.product_head.addProduct(
+                                    productName=products["name"],
+                                    categoryName=products["category"],
+                                    brandName=products["brand"],
+                                    price=products["price"],
+                                    quantity=products["quantity"]
                                 )
 
-                            if product:
-                                print(f"{productInfo['name']} sold successfully")
-                                print(f"Sale Receipt: {salesLog.getRear()}")
-                            else:
-                                print("Product hasn't been found.")
-                            continue
-                        
+                                if product:
+                                    print(f"{product['name']} is added")
+
+                                else:
+                                    print(f"There has been a problem adding this product")
+
+                        case 2:
+                            prodName = input(f"Enter product Name: ")
+                            brandName = input(f"Enter {prodName}'s brand: ")
+                            catgName = input(f"Enter {prodName}'s category: ")
+                            categorySearchResults = categories.searchCategory(categories.root, catgName) 
+                            if categorySearchResults:
+                                brandSearchResults = categorySearchResults.brand_head.searchBrand(brandName)
+                                if brandSearchResults:
+                                    productSearhResults = brandSearchResults.product_head.searchProduct(prodName)
+                                    if productSearhResults:
+                                        print(f"Product has been found.")
+                                        continue
+                                    print(f"Product doesn't exists in this brand.")
+                                    continue
+                                print(f"Brand doesn't exists in this category.")
+                                continue
+                            print(f"Category doesn't exists.")
+                            continue    
+
+                        case 3:
+                            pass
+
                         case 4:
                             categories.levelOrderTraversal(categories.root)
                             continue
 
                         case 5:
-                            category = input("Category Name: ")
-                            categorySelected = categories.searchCategory(categories.root, category.strip())
-                            if categorySelected:
-                                brands.printBrands(categories, categorySelected.name)
-                                continue
-                            print("There is no such Category")
+                            catgName = input("Enter Category Name: ")
+                            categorySearchResults = categories.searchCategory(categories.root, catgName)
+                            if categorySearchResults:
+                                brands = categorySearchResults.brand_head
+                                brands.printBrands()
+                            else:
+                                print(f"Category doesn't exist.")
+                            continue
 
                         case -1:
                             break
